@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Tiêu đề</th>
+                    <th>Lượt xem</th>
+                </tr>
+            </thead>
+            <tbody id="body_table">
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <input type="text" id="id_txt" />
+        <input type="text" id="title_txt" />
+        <input type="text" id="view_txt" />
+        <input type="submit" value="Save" onclick="Save()">
+    </div>
+    <hr>
+    <h2>Comments</h2>
+    <input type="hidden" id="comment_postId">
+    <div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>PostId</th>
+                    <th>Nội dung</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="comment_table"></tbody>
+        </table>
+    </div>
+
+    <div>
+        <input type="text" id="comment_id_txt">
+        <input type="text" id="comment_text_txt">
+        <input type="submit" value="Save Comment" onclick="CreateComment()">
+    </div>
+    <script src="ngay2.js"></script>
+</body>
+
+</html>
