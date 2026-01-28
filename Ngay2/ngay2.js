@@ -64,7 +64,7 @@ async function Save() {
             })
         });
 
-        if (res.ok) console.log("Tạo mới thành công");
+        if (res.ok) console.log("Tao moi thanh cong");
     }
     else {
         let res = await fetch("http://localhost:3000/posts/" + id, {
@@ -79,7 +79,7 @@ async function Save() {
         });
 
         if (res.ok) {
-            console.log("Cập nhật thành công");
+            console.log("CCap nhat thanh cong");
         } else {
             alert("ID không tồn tại!");
         }
@@ -106,15 +106,17 @@ async function Delete(id) {
     LoadData();
 }
 
-async function LoadComments(postId) {
-    let res = await fetch("http://localhost:3000/comments?postId=" + postId);
+async function LoadComments() {
+    let res = await fetch("http://localhost:3000/comments");
     let comments = await res.json();
 
     let body = document.getElementById("comment_table");
     body.innerHTML = "";
 
     for (const c of comments) {
-        let style = c.isDeleted
+        let isDeleted = c.isDeleted === true;
+
+        let style = isDeleted
             ? "style='text-decoration: line-through; color: gray;'"
             : "";
 
@@ -124,7 +126,7 @@ async function LoadComments(postId) {
                 <td>${c.postId}</td>
                 <td>${c.text}</td>
                 <td>
-                    ${c.isDeleted ? "" : `
+                    ${isDeleted ? "" : `
                         <input type="button" value="Delete" onclick="DeleteComment('${c.id}')">
                     `}
                 </td>
@@ -132,43 +134,57 @@ async function LoadComments(postId) {
         `;
     }
 }
+LoadComments();
 
-async function CreateComment(postId, text) {
-    let resAll = await fetch("http://localhost:3000/comments");
-    let comments = await resAll.json();
+async function SaveComment() {
+    let id = document.getElementById("comment_id_txt").value.trim();
+    let postId = document.getElementById("comment_postId_txt").value.trim();
+    let text = document.getElementById("comment_text_txt").value.trim();
 
-    let maxId = 0;
-    for (const c of comments) {
-        let num = parseInt(c.id);
-        if (num > maxId) maxId = num;
+    if (postId === "" || text === "") {
+        alert("PostId và nội dung comment không được rỗng");
+        return;
     }
 
-    let newId = (maxId + 1).toString();
+    if (id === "") {
+        let resAll = await fetch("http://localhost:3000/comments");
+        let comments = await resAll.json();
 
-    await fetch("http://localhost:3000/comments", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            id: newId,
-            postId: postId,
-            text: text,
-            isDeleted: false
-        })
-    });
-}
+        let maxId = 0;
+        for (const c of comments) {
+            let num = parseInt(c.id);
+            if (num > maxId) maxId = num;
+        }
 
-async function UpdateComment(id, text) {
-    await fetch("http://localhost:3000/comments/" + id, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            text: text
-        })
-    });
+        let newId = (maxId + 1).toString();
+
+        await fetch("http://localhost:3000/comments", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                id: newId,
+                postId: postId,
+                text: text,
+                isDeleted: false
+            })
+        });
+    }
+    else {
+        await fetch("http://localhost:3000/comments/" + id, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                postId: postId,
+                text: text
+            })
+        });
+    }
+
+    document.getElementById("comment_id_txt").value = "";
+    document.getElementById("comment_postId_txt").value = "";
+    document.getElementById("comment_text_txt").value = "";
+
+    LoadComments();
 }
 
 async function DeleteComment(id) {
@@ -183,4 +199,11 @@ async function DeleteComment(id) {
     });
 }
 
+function EditComment(id, postId, text) {
+    document.getElementById("comment_id_txt").value = id;
+    document.getElementById("comment_postId_txt").value = postId;
+    document.getElementById("comment_text_txt").value = text;
+}
+
 LoadData();
+LoadComments();

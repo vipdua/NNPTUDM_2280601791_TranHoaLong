@@ -13,8 +13,8 @@
     },
     {
       "id": "3",
-      "title": "long",
-      "views": "300",
+      "title": "long trần",
+      "views": "400",
       "isDeleted": false
     }
   ],
@@ -28,6 +28,18 @@
       "id": "2",
       "text": "another comment about post 1",
       "postId": "1"
+    },
+    {
+      "id": "3",
+      "postId": "2",
+      "text": "long đẹp zai",
+      "isDeleted": true
+    },
+    {
+      "id": "4",
+      "postId": "2",
+      "text": "long trần",
+      "isDeleted": false
     }
   ],
   "profile": {
