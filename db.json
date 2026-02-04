@@ -16,6 +16,12 @@
       "title": "long trần",
       "views": "400",
       "isDeleted": false
+    },
+    {
+      "id": "4",
+      "title": "long",
+      "views": "500",
+      "isDeleted": true
     }
   ],
   "comments": [
